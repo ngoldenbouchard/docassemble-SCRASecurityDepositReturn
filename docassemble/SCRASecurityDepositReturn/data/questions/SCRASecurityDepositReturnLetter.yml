@@ -1,0 +1,329 @@
+---
+metadata:
+  title: |
+    SCRA Security Deposit Return Letter
+  short title: |
+    SCRA Security Deposit Return
+  description: |
+    The SCRA Security Deposit Return Letter interview will help you draft a letter to a former landlord requesting they return your security deposit.
+  #exit url: https://www.masslegalservices.org/content/online-snap-calculator
+  show login: False
+  #generate download screen: True
+---
+include: 
+  - docassemble.AssemblyLine:assembly_line.yml
+  - custom_ssl_theme.yml
+  #- custom_ptla_theme_ngb.yml
+  #- MaineDebtCollectionHelper-calculations.yml
+---
+default screen parts:
+  footer: |
+    [:share-alt-square: Share](${ url_ask([{'undefine': ['al_sharing_type','al_how_share_link']}, 'al_share_form_screen', {'recompute': ['al_did_share_form']}, 'al_share_results']) })
+    [:info-circle: About](${ url_action('about_this_interview') })
+    [:comment-dots: Feedback](https://forms.office.com/Pages/ResponsePage.aspx?id=gOsuS1HkzESOjJ_IxTUKuD8iguCNz0RHpK3V26oh9QpUQkJPTTc3UTBZU0cxVEpOQlMzSlc1R1gzQy4u){:target="_blank"}
+---
+features:
+  question back button: True
+  navigation back button: False
+   #theme file downloaded from: bootstrap theme: https://bootswatch.com/cerulean/bootstrap.min.css
+  css: 
+    - ssltheme.css
+    #- ptlatheme.css
+    #- bootstrap.min.css
+  hide navbar: False 
+  debug: False
+---
+modules:
+  - docassemble.base.core
+---
+template: PTLA_terms_of_use
+content: |
+  ## StatesideLegal's Terms of Use and Privacy Policy
+
+  This website is free to use.
+  StatesideLegal hosts this site.
+
+  ### You need to know
+
+  * This website does not provide legal advice. If you need legal advice, contact a lawyer.
+
+  * The information and documents on this website have no warranty. We provide the information “as-is.” By using the site, you agree not to hold StatesideLegal, Pine Tree Legal Assistance, and/or the information providers on this site liable.
+
+  * We work hard to keep the information on the site up to date. Lawyers drafted and reviewed the documents this site uses. But laws and rules change over time. These changes can make a document unenforceable when you use it.
+
+  * We do our best to keep the site working! To do that, we allow you to submit feedback so we can track problems on the site. But we cannot provide individual technical support. 
+
+  ### To use this site
+
+  * You need to be over 13 to use this site. 
+
+  * This site is for anyone 13 and over. For example: you can be the person who needs the help, a lawyer, or a social worker.
+
+  * You may not sell the information or the contents of this site. But you can charge for your own time. 
+
+  * Please keep your use fair. Do not use this site in a way that is illegal or that makes it harder for other people to use.
+
+  ### Information we and others collect
+
+  * We collect the information that you type to help you complete your forms. We delete all information 180 days after you last update it. You can also delete information immediately.
+
+  * We log information including IP addresses and web browsers from all visitors. We use this information to keep our site secure. We keep logs for up to 180 days.
+
+  * We use Google Analytics to learn how people use our website. This helps us understand which pages are hardest to use. Google may use this information to show you better advertisements.
+
+  * We use email and text message delivery services that may keep their own records of any messages you send. If you choose to log in with your phone number, this may include a record of the times you log in to the site.
+
+  ### We keep your information safe
+
+  * We use the same technology that banks and online stores use to keep your information safe.
+  
+  * We use:
+    * 256 bit encryption
+    
+    * Continual monitoring
+    
+    * Limited access controls
+    
+    * Regular security updates
+    
+    * Software firewalls
+
+  ### Sharing your information
+
+  * We never sell your information.
+
+  * We share anonymous information with a small number of nonprofits and researchers. We use the information to improve our site and to improve free legal help for veterans.
+
+  * When you visit some pages of the site, the site may ask if you want to apply to get a free lawyer from legal aid. You get to decide if you want to share your personal information.
+
+  * You may choose to email completed forms or share a link to your in-progress work at any time to any person.
+
+  ### These terms of use can change
+
+  * We may change these Terms of Use at any time with no notice. Please review the terms on a regular basis to see any changes.
+
+  * If you use the site after we make changes, you accept our changed Terms of Use.
+
+  The laws of Maine apply to these Terms of Use.
+
+  If a judge decides that one of the terms in this Terms of Use is unenforceable, it will not change the terms that remain.
+
+  ### If you still have questions
+
+  If you would like to access, correct, amend, or delete any personal information we have about you or have any other questions, contact us via our [email form](https://statesidelegal.org/contact) or at: 
+
+  StatesideLegal
+  
+  c/o Pine Tree Legal Assistance, Inc.
+  
+  88 Federal Street
+  
+  Portland, ME 04101
+---
+mandatory: True
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_SecurityDepositReturn
+code: |
+  SecurityDeposit_intro
+  users.gather()
+  set_parts(subtitle=str(users))
+  users[0].name
+  users[0].address
+  rank
+  set_progress(20)
+  landlord_name
+  landlord_address
+  set_progress(40)
+  rental_address
+  tenancy_end_date
+  set_progress(60)
+  partial_return
+  not_returned_amount
+  if partial_return:
+    wear_and_tear
+  set_progress(80)
+  #al_form_requires_digital_signature = False
+  #basic_questions_signature_flow
+  #users[0].signature 
+  #set_progress(100)
+  interview_order_SecurityDepositReturn = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+ SecurityDeposit_intro
+ users.gather()
+ set_parts(subtitle=str(users))
+ users[0].name
+ users[0].address
+ rank
+ set_progress(20)
+ landlord_name
+ landlord_address
+ set_progress(40)
+ rental_address
+ tenancy_end_date
+ set_progress(60)
+ partial_return
+ not_returned_amount
+ if partial_return:
+   wear_and_tear
+ set_progress(80)
+ al_form_requires_digital_signature = False
+ basic_questions_signature_flow
+ users[0].signature 
+ set_progress(100)
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: SDRL_intro
+continue button field: SecurityDeposit_intro
+question: |
+  SCRA Security Deposit Return Letter
+subquestion: |
+  As a member of the Armed Forces, Reserves, National Guard or other uniformed services, you have legal protections for you and your family when you are called into active duty military service. 
+  
+  The Servicemembers Civil Relief Act (SCRA) states that your landlord must refund your security deposit (minus any damages) within 30 days of the date the lease was lawfully terminated under the SCRA, 50 U.S.C. App. §535.
+ 
+  Use this interview to draft a letter to a former landlord to request the return of your security deposit.
+ 
+  This is not legal advice. If you have questions about a landlord keeping part or all of your security deposit, you should contact a lawyer. You can [find assistance](https://www.statesidelegal.org/stateside-map) at StatesideLegal's Find Legal Help. 
+  
+  You can learn more about the SCRA in the [What is the Servicemembers Civil Relief Act? (Video).](https://www.statesidelegal.org/what-servicemembers-civil-relief-act-video).
+  
+  ${ display_template(PTLA_terms_of_use, scrollable=True, collapse=False) }
+fields:
+  - To continue, you must you must accept the terms of use: acknowledged_information_use
+    datatype: checkboxes
+    none of the above: False    
+    minlength: 1
+    choices:
+      - I accept the terms of use.
+    validation messages:
+      minlength: |
+        You cannot continue unless you agree to the terms of use.
+continue button label: Get started
+---
+id: Landlord
+question: |
+  About your former landlord
+fields:
+  - What is your former landlord's name?: landlord_name
+  #- What is your former landlord's mailing address?: landlord_address 
+---
+id: Landlord address
+sets:
+    - other_parties[0].address.address
+    - other_parties[0].address.unit
+    - other_parties[0].address.city
+    - other_parties[0].address.state
+    - other_parties[0].address.zip
+question:  |
+  What is your former landlord's address?
+fields:
+  - code: |
+      other_parties[0].address_fields()
+continue button field: landlord_address
+---
+id: Previous Rental
+question: |
+  About your former rental
+fields:
+  - When did your tenancy there end?: tenancy_end_date
+    datatype: date
+  - What was the total security deposit paid?: total_deposit
+    datatype: currency    
+---
+id: About Your Rank and Military Branch
+question: |
+  More about you
+subquestion: |
+  What is your rank and military branch
+  
+fields:
+  - "What is your rank?": rank
+    maxlength: 25
+  - "What military branch are you in?": branch
+    maxlength: 30 
+---
+objects:
+  - rental: Individual
+---
+id: Previous rental address
+sets:
+    - rental.address.address
+    - rental.address.unit
+    - rental.address.city
+    - rental.address.state
+    - rental.address.zip
+question:  |
+  What is the address of your <b>former</b> rental?
+fields:
+    - Street address: rental.address.address
+    - Unit: rental.address.unit
+      required: False
+    - City/Town: rental.address.city
+    - State: rental.address.state
+    - Zip code: rental.address.zip
+
+continue button field: rental_address
+---
+id: Return status
+question: |
+  What is the status of your security deposit?
+fields: 
+  - Has your landlord sent you a notice about not returning part or all of your security deposit?: partial_return
+    datatype: yesnoradio
+  - What is the date on the notice your landlord sent you?: notice_date
+    datatype: date
+    show if: partial_return
+---
+mandatory: True
+code: |
+  if partial_return == True:
+    not_returned = False
+  else:
+    not_returned = True
+---
+id: Return demand
+question: |
+  About your deposit
+fields:
+  - How much of your deposit has the landlord kept?: not_returned_amount
+    datatype: currency
+---
+id: Dispute demand
+question: |
+  Why you disagree with your previous landlord's reasons for keeping part or all of your security deposit
+subquestion: |
+  Please check all that apply
+fields:
+  - The damages the landlord is claiming are just normal wear and tear: wear_and_tear
+    datatype: yesno
+  - The damages the landlord is claiming are not damages you caused: not_my_damage
+    datatype: yesno
+  - I do not owe the money the landlord is keeping (I already repaired damages or paid the landlord for damages): not_owed
+    datatype: yesno
+  - The landlord did not include an itemized list of damages, or give a reason for why they kept some or all of my deposit: no_reason
+    datatype: yesno
+  - I disagree for another reason: other_dispute
+    datatype: yesno
+  - Why do you disagree with the landlord's reasons for keeping some or all of your security deposit?: other_dispute_detail
+    input type: area
+    show if: other_dispute
+---
+mandatory: True
+question: |
+  All done! Save or print your letter to send to your former landlord.
+attachment:
+  name: SCRA Security Deposit Return Letter
+  filename: SCRASecurityDepositReturnLetter
+  docx template file: SCRASecurityDepositReturnLetter.docx
+  skip undefined: True
+  valid formats:
+    - pdf
+    - docx
