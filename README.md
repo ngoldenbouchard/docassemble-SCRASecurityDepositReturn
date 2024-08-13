@@ -1,8 +1,10 @@
-# docassemble.MaineSecurityDepositReturnLetter
+# docassemble.SCRASecurityDepositReturn
 
-Maine Security Deposit Return Letter
+
+SCRA Security Deposit Return Letter
+
 
 ## Author
 
-Jack Haycock, jhaycock@ptla.org
+Nicole Golden-Bouchard, ngolden-bouchard@ptla.org
 

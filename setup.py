@@ -45,8 +45,8 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 
 setup(name='docassemble.SCRASecurityDepositReturn',
       version='1.0.0',
-      description=('Maine Security Deposit Return Letter'),
-      long_description='# docassemble.MaineSecurityDepositReturnLetter\r\n\r\nMaine Security Deposit Return Letter\r\n\r\n## Author\r\n\r\nJack Haycock, jhaycock@ptla.org\r\n\r\n',
+      description=('SCRA Security Deposit Return'),
+      long_description='# docassemble.SCRASecurityDepositReturn\r\n\r\n\r\nSCRA Security Deposit Return Letter\r\n\r\n\r\n## Author\r\n\r\nNicole Golden-Bouchard, ngolden-bouchard@ptla.org\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Nicole Golden-Bouchard',
       author_email='ngolden-bouchard@ptla.org',
