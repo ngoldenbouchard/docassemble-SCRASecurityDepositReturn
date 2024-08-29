@@ -129,7 +129,7 @@ code: |
   users.gather()
   set_parts(subtitle=str(users))
   users[0].name
-  users[0].address
+  user_address
   rank
   set_progress(20)
   landlord_name
@@ -143,10 +143,11 @@ code: |
   if partial_return:
     wear_and_tear
   set_progress(80)
-  #al_form_requires_digital_signature = False
-  #basic_questions_signature_flow
-  #users[0].signature 
-  #set_progress(100)
+  al_form_requires_digital_signature = False
+  basic_questions_signature_flow
+  users[0].signature
+  #security_deposit_letter_download
+  set_progress(100)
   interview_order_SecurityDepositReturn = True
 ---
 ###################### Main order ######################
@@ -159,7 +160,7 @@ code: |
  users.gather()
  set_parts(subtitle=str(users))
  users[0].name
- users[0].address
+ user_address
  rank
  set_progress(20)
  landlord_name
@@ -176,6 +177,7 @@ code: |
  al_form_requires_digital_signature = False
  basic_questions_signature_flow
  users[0].signature 
+ #security_deposit_letter_download
  set_progress(100)
 ---
 comment: |
@@ -214,6 +216,26 @@ question: |
 fields:
   - What is your former landlord's name?: landlord_name
   #- What is your former landlord's mailing address?: landlord_address 
+---
+id: Current address
+sets:
+  - users[0].address.address
+  - users[0].address.unit
+  - users[0].address.city    
+  - users[0].address.state
+  - users[0].address.zip
+question: |
+  What is your current address?
+subquestion: |
+  Be sure to use an address you can get mail at - this is the address you will ask your former landlord to send your deposit to!
+fields:
+    - Street address: users[0].address.address
+    - Unit: users[0].address.unit
+      required: False
+    - City/Town: users[0].address.city
+    - State: users[0].address.state
+    - Zip code: users[0].address.zip
+continue button field: user_address
 ---
 id: Landlord address
 sets:
@@ -316,14 +338,35 @@ fields:
     input type: area
     show if: other_dispute
 ---
+objects:
+  - Next_Steps: ALDocument.using(title="Instructions", filename="SCRA_security_deposit_next_steps.docx", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+  - Security_Deposit_Return_Letter: ALDocument.using(title="Security Deposit Return Letter", filename="SCRASecurityDepositReturnLetter", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+---
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[Next_Steps,Security_Deposit_Return_Letter], filename="security_deposit_package.pdf", title="All documents to download for your records", enabled=True)
+  - al_recipient_bundle: ALDocumentBundle.using(elements=Next_Steps,Security_Deposit_Return Letter], filename="security_deposit_package.pdf", title="All documents to download for your records", enabled=True)  
+---  
+attachments:
+  - name: Security_Deposit_Return_Letter
+    filename: SCRASecurityDepositReturnLetter
+    docx template file: SCRASecurityDepositReturnLetter.docx
+    skip undefined: True
+    variable name: Security_Deposit_Return_Letter[i]
+    valid formats:
+      - pdf
+      - docx
+  - name: Next_Steps
+    filename: NextSteps - SCRASecurityDepositReturn           
+    skip undefined: True
+    docx template file: SCRA_security_deposit_next_steps.docx
+    variable name: Next_Steps[i]
+---
 mandatory: True
 question: |
-  All done! Save or print your letter to send to your former landlord.
-attachment:
-  name: SCRA Security Deposit Return Letter
-  filename: SCRASecurityDepositReturnLetter
-  docx template file: SCRASecurityDepositReturnLetter.docx
-  skip undefined: True
-  valid formats:
-    - pdf
-    - docx
+  All done! Below you can view, download, and email your completed letter. <p></p> 
+  <p>Please be sure to read the instructions. They will explain next steps depending on whether you have an attorney or not.</p>
+subquestion: |
+
+  ${ al_user_bundle.download_list_html() }    
+  
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }

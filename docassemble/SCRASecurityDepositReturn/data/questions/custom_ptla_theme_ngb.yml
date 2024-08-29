@@ -48,7 +48,9 @@ features:
   progress bar: True
   navigation: True
   css: ptlatheme.css
+  auto color scheme: False
 ---
+
 ########################### Bootstrap theme ##############################
 comment: |
   If you would like to customize:

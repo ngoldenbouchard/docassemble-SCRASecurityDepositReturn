@@ -54,10 +54,12 @@
 body {
   font-family: "Arimo", sans-serif;
   color: #000000;
- 
 }
 
-/*-----DARK MODE VISUALS------*/
+/* --------------------------------------------------------------------
+                          DARK MODE VISUALS
+   --------------------------------------------------------------------*/
+
 function myFunction() {
   var element = document.body;
   element.classList.toggle("dark-mode");
@@ -92,10 +94,17 @@ body {
   background-color: #fff
 }
 
+.row {
+.form-select:focus {
+  color: #000;
+  }  
+}
+
 [data-bs-theme=dark] .al_collapse_template .bg-light, [data-bs-theme=dark] .al_display_template .bg-light, [data-bs-theme=dark] .al_display_template.bg-light {
     --bs-bg-opacity: 1;
-    background-color: #f8f9fa !important;
+    background-color: #f6f6f6 !important;
     border-color: #d3d4d5 !important;
+    scrollbar-color: #999999 #ededed; /* First color for thumb, second for track */
 }
 
 .text-start.btn.btn-light.dalabelauty {
@@ -107,27 +116,53 @@ body {
       --bs-btn-hover-border-color: #eeeeee;
 }
 
+/* Signature block*/
 [data-bs-theme=dark] #dasigcanvas {
     background-color: #eeee;
 }
 
-/* -------END OF DARK MODE------*/
-
-/*Dark Mode visuals
-function myFunction() {
-  var element = document.body;
-  element.classList.toggle("dark-mode");
+input:-webkit-autofill {
+    -webkit-text-fill-color: black;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
-body {
-  background-color: #fff;
-  margin: 0;
+/*blue box near the top of the final page*/
+.alert-success {
+    --bs-alert-color: #002968;
+    --bs-alert-bg: #8ac1ef;
+    --bs-alert-border-color: #8ac1ef;
+    --bs-alert-link-color: #002968;
 }
 
-.dark-mode {
-  background-color: rgb(220, 220, 220);
-  color: #fff;
+/*Email block on final page*/
+.card {
+    --bs-card-cap-bg: #eee;
+    --bs-card-cap-color: #000;
+    --bs-card-color: #000;
+    --bs-card-bg: #fff;
 }
+
+/* checkbox on the Email Block on the last page*/
+.form-check-input {
+    background-color: #fff;
+}
+
+/*Download button on last page*/
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
+    border-top-color: ;
+    border-right-color: ;
+    border-left-color: ;
+    border-bottom-color: #eee0;
+}
+
+
+/* --------------------------------------------------------------------
+                          END OF DARK MODE
+   --------------------------------------------------------------------*/
+
 
 
 /* This is for the color of nav the buttons and primary buttons - Stripped from inspect */
@@ -296,35 +331,17 @@ body {
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgba(2, 68, 66,.25);
 }
+
+/*progress bar margin*/
+.mt-2 {
+  margin-top: 2.0rem !important;
+}
+  
 /*====================================================================================================== 
 Progress Bar on mobile || 375 x 812 || Default, Portrait and Landscape 
 ======================================================================================================== */
 @media only screen and (min-width: 375px) 
 and (max-width: 812px){ 
-    .progress, .progress-stacked {
-      width:390px;
-      height:22px;
-      background-color: #eeeeee;/*{display: none !important; visibility: hidden !important;}*/
-  }
-    .form-control {
-      color: #000;
-      background-color: #eeeeee;
-  }
-    .form-select {
-      color: #000;
-      background-color: #eeeeee;
-  }
-    .text-start.btn.btn-light.dalabelauty {
-      --bs-btn-color: #000;
-      --bs-btn-bg: #f8f9fa;
-      --bs-btn-border-color: #f8f9fa;
-  }
-    .row {
-      --bs-gutter-x: 2.5rem;
-      --bs-gutter-y: .5rem;
-}
-@media only screen and (min-width: 375px) 
-and (max-width: 812px) and (orientation: portrait) { 
     .progress, .progress-stacked {
       width:350px;
       height:22px;
@@ -346,11 +363,45 @@ and (max-width: 812px) and (orientation: portrait) {
     .row {
       --bs-gutter-x: 2.5rem;
       --bs-gutter-y: .5rem;
+  }
+    .mt-2 {
+      margin-top: 2.0rem !important;
+  }
 }
+  
+@media only screen and (min-width: 375px) 
+and (max-width: 812x) and (orientation: portrait) { 
+    .progress, .progress-stacked {
+      width:350px;
+      height:22px;
+      background-color: #eeeeee;/*{display: none !important; visibility: hidden !important;}*/
+  }
+    .form-control {
+      color: #000;
+      background-color: #eeeeee;
+  }
+    .form-select {
+      color: #000;
+      background-color: #eeeeee;
+  }   
+    .text-start.btn.btn-light.dalabelauty {
+      --bs-btn-color: #000;
+      --bs-btn-bg: #f8f9fa;
+      --bs-btn-border-color: #f8f9fa;
+  }
+    .row {
+      --bs-gutter-x: 2.5rem;
+      --bs-gutter-y: .5rem;
+  }
+    .mt-2 {
+      margin-top: 2.0rem !important;
+  }
+}
+  
 @media only screen and (min-width: 375px) 
 and (max-width: 812px) and (orientation: landscape) { 
     .progress, .progress-stacked {
-      width:390px;
+      width:500px;
       height:22px;
       background-color: #eeeeee;/*{display: none !important; visibility: hidden !important;}*/
   }      
@@ -361,7 +412,7 @@ and (max-width: 812px) and (orientation: landscape) {
     .form-select {
       color: #000;
       background-color: #eeeeee;
-  }
+  } 
     .text-start.btn.btn-light.dalabelauty {
       --bs-btn-color: #000;
       --bs-btn-bg: #f8f9fa;
@@ -370,4 +421,9 @@ and (max-width: 812px) and (orientation: landscape) {
     .row {
       --bs-gutter-x: 2.5rem;
       --bs-gutter-y: .5rem;
+  }
+    .mt-2 {
+      margin-top: 2.0rem !important;
+  }
 }
+  
