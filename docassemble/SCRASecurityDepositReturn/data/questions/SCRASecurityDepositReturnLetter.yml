@@ -43,6 +43,7 @@ content: |
   This website is free to use.
   StatesideLegal hosts this site.
 
+
   ### You need to know
 
   * This website does not provide legal advice. If you need legal advice, contact a lawyer.
@@ -52,6 +53,7 @@ content: |
   * We work hard to keep the information on the site up to date. Lawyers drafted and reviewed the documents this site uses. But laws and rules change over time. These changes can make a document unenforceable when you use it.
 
   * We do our best to keep the site working! To do that, we allow you to submit feedback so we can track problems on the site. But we cannot provide individual technical support. 
+
 
   ### To use this site
 
@@ -63,6 +65,7 @@ content: |
 
   * Please keep your use fair. Do not use this site in a way that is illegal or that makes it harder for other people to use.
 
+
   ### Information we and others collect
 
   * We collect the information that you type to help you complete your forms. We delete all information 180 days after you last update it. You can also delete information immediately.
@@ -72,6 +75,7 @@ content: |
   * We use Google Analytics to learn how people use our website. This helps us understand which pages are hardest to use. Google may use this information to show you better advertisements.
 
   * We use email and text message delivery services that may keep their own records of any messages you send. If you choose to log in with your phone number, this may include a record of the times you log in to the site.
+
 
   ### We keep your information safe
 
@@ -88,6 +92,7 @@ content: |
     
     * Software firewalls
 
+
   ### Sharing your information
 
   * We never sell your information.
@@ -98,6 +103,7 @@ content: |
 
   * You may choose to email completed forms or share a link to your in-progress work at any time to any person.
 
+
   ### These terms of use can change
 
   * We may change these Terms of Use at any time with no notice. Please review the terms on a regular basis to see any changes.
@@ -107,6 +113,7 @@ content: |
   The laws of Maine apply to these Terms of Use.
 
   If a judge decides that one of the terms in this Terms of Use is unenforceable, it will not change the terms that remain.
+
 
   ### If you still have questions
 
@@ -126,11 +133,11 @@ comment: |
 id: interview_order_SecurityDepositReturn
 code: |
   SecurityDeposit_intro
-  users.gather()
-  set_parts(subtitle=str(users))
-  users[0].name
+  #users.gather()
+  #set_parts(subtitle=str(users))
+  user_name
   user_address
-  rank
+  servicemember
   set_progress(20)
   landlord_name
   landlord_address
@@ -140,8 +147,10 @@ code: |
   set_progress(60)
   partial_return
   not_returned_amount
-  if partial_return:
+  do_dispute
+  if do_dispute:
     wear_and_tear
+  #total_due
   set_progress(80)
   al_form_requires_digital_signature = False
   basic_questions_signature_flow
@@ -157,11 +166,11 @@ comment: |
 mandatory: True
 code: |
  SecurityDeposit_intro
- users.gather()
- set_parts(subtitle=str(users))
- users[0].name
+ #users.gather()
+ #set_parts(subtitle=str(users))
+ user_name
  user_address
- rank
+ servicemember
  set_progress(20)
  landlord_name
  landlord_address
@@ -171,8 +180,10 @@ code: |
  set_progress(60)
  partial_return
  not_returned_amount
- if partial_return:
-   wear_and_tear
+ do_dispute
+ if do_dispute:
+  wear_and_tear
+ #total_due
  set_progress(80)
  al_form_requires_digital_signature = False
  basic_questions_signature_flow
@@ -187,15 +198,15 @@ continue button field: SecurityDeposit_intro
 question: |
   SCRA Security Deposit Return Letter
 subquestion: |
-  As a member of the Armed Forces, Reserves, National Guard or other uniformed services, you have legal protections for you and your family when you are called into active duty military service. 
-  
-  The Servicemembers Civil Relief Act (SCRA) states that your landlord must refund your security deposit (minus any damages) within 30 days of the date the lease was lawfully terminated under the SCRA, 50 U.S.C. App. §535.
+ If you are in the Armed Forces, Reserves, National Guard, or other uniformed services, you and your family have legal protections when you're called to active duty. The Servicemembers Civil Relief Act (SCRA) provides many of those protections.
+
+  One protection related to housing leases says that if you ended your lease legally under the SCRA, your landlord has to return your security deposit (minus any damages) within 30 days of when the lease ended.
  
-  Use this interview to draft a letter to a former landlord to request the return of your security deposit.
+  This letter is for servicemembers or their dependents who have lawfully ended their lease using the SCRA and the landlord has failed to return their security deposit.
  
-  This is not legal advice. If you have questions about a landlord keeping part or all of your security deposit, you should contact a lawyer. You can [find assistance](https://www.statesidelegal.org/stateside-map) at StatesideLegal's Find Legal Help. 
+  Please Note: This is not legal advice. If you have questions about a landlord keeping part or all of your security deposit, you should contact a lawyer. You can [find assistance](https://www.statesidelegal.org/stateside-map) at StatesideLegal's Find Legal Help. 
   
-  You can learn more about the SCRA in the [What is the Servicemembers Civil Relief Act? (Video).](https://www.statesidelegal.org/what-servicemembers-civil-relief-act-video).
+  You can learn more about the SCRA in the [What is the Servicemembers Civil Relief Act? (Video)](https://www.statesidelegal.org/what-servicemembers-civil-relief-act-video).
   
   ${ display_template(PTLA_terms_of_use, scrollable=True, collapse=False) }
 fields:
@@ -209,6 +220,13 @@ fields:
       minlength: |
         You cannot continue unless you agree to the terms of use.
 continue button label: Get started
+#---
+#id: Another user
+#question: | 
+#  Is anyone else adding their name to this form with you?
+#fields: 
+#  - Has your landlord sent you a notice about not returning part or all of your security deposit?: users.there_is_another
+#    datatype: yesnoradio
 ---
 id: Landlord
 question: |
@@ -216,6 +234,24 @@ question: |
 fields:
   - What is your former landlord's name?: landlord_name
   #- What is your former landlord's mailing address?: landlord_address 
+---
+---
+id: Users Name
+sets:
+  - users[0].name.first
+  - users[0].name.middle
+  - users[0].name.last    
+  - users[0].name.suffix
+question: |
+  What is your name?
+fields:
+    - First Name: users[0].name.first
+    - Middle Name: users[0].name.middle
+      required: False
+    - Last Name: users[0].name.last
+    - Suffix: users[0].name.suffix
+      required: False
+continue button field: user_name
 ---
 id: Current address
 sets:
@@ -263,14 +299,15 @@ fields:
 id: About Your Rank and Military Branch
 question: |
   More about you
-subquestion: |
-  What is your rank and military branch
-  
 fields:
+  - Are you the servicemember on the old lease?: servicemember
+    datatype: yesnoradio
   - "What is your rank?": rank
     maxlength: 25
+    show if: servicemember
   - "What military branch are you in?": branch
     maxlength: 30 
+    show if: servicemember
 ---
 objects:
   - rental: Individual
@@ -318,9 +355,16 @@ fields:
   - How much of your deposit has the landlord kept?: not_returned_amount
     datatype: currency
 ---
+id: Do Dispute
+question: |
+  About the amount the Landlord has kept
+fields:
+  - Do you disagree with the amount of the security deposit your previous landlord kept?: do_dispute    
+    datatype: yesnoradio
+---
 id: Dispute demand
 question: |
-  Why you disagree with your previous landlord's reasons for keeping part or all of your security deposit
+  Why do you disagree with your previous landlord's reasons for keeping part or all of your security deposit?
 subquestion: |
   Please check all that apply
 fields:
@@ -337,6 +381,21 @@ fields:
   - Why do you disagree with the landlord's reasons for keeping some or all of your security deposit?: other_dispute_detail
     input type: area
     show if: other_dispute
+#---
+#id: Total Due
+#question: |
+#  Amount Owed to You
+#fields:
+#  - What's the total amount you want back from your deposit?: total_due
+#    datatype: currency
+---
+id: Amount Owed
+code: |
+  if partial_return == True:
+    amount_owed = (total_deposit - not_returned_amount)
+  else: 
+    amount_owed = total_deposit
+mandatory: True
 ---
 objects:
   - Next_Steps: ALDocument.using(title="Instructions", filename="SCRA_security_deposit_next_steps.docx", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
