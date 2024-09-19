@@ -134,8 +134,9 @@ id: interview_order_SecurityDepositReturn
 code: |
   SecurityDeposit_intro
   #users.gather()
-  #set_parts(subtitle=str(users))
-  user_name
+  set_parts(subtitle=str(users))
+  users[0].name
+  #user_name
   user_address
   servicemember
   set_progress(20)
@@ -167,8 +168,9 @@ mandatory: True
 code: |
  SecurityDeposit_intro
  #users.gather()
- #set_parts(subtitle=str(users))
- user_name
+ set_parts(subtitle=str(users))
+ users[0].name
+ #user_name
  user_address
  servicemember
  set_progress(20)
@@ -234,24 +236,23 @@ question: |
 fields:
   - What is your former landlord's name?: landlord_name
   #- What is your former landlord's mailing address?: landlord_address 
----
----
-id: Users Name
-sets:
-  - users[0].name.first
-  - users[0].name.middle
-  - users[0].name.last    
-  - users[0].name.suffix
-question: |
-  What is your name?
-fields:
-    - First Name: users[0].name.first
-    - Middle Name: users[0].name.middle
-      required: False
-    - Last Name: users[0].name.last
-    - Suffix: users[0].name.suffix
-      required: False
-continue button field: user_name
+#---
+#id: Users Name
+#sets:
+#  - users[0].name.first
+#  - users[0].name.middle
+#  - users[0].name.last    
+#  - users[0].name.suffix
+#question: |
+#  What is your name?
+#fields:
+#    - First Name: users[0].name.first
+#    - Middle Name: users[0].name.middle
+#      required: False
+#    - Last Name: users[0].name.last
+#    - Suffix: users[0].name.suffix
+#      required: False
+#continue button field: user_name
 ---
 id: Current address
 sets:
@@ -352,7 +353,7 @@ id: Return demand
 question: |
   About your deposit
 fields:
-  - How much of your deposit has the landlord kept?: not_returned_amount
+  - How much of your deposit has the landlord said they will keep?: not_returned_amount
     datatype: currency
 ---
 id: Do Dispute
