@@ -6,9 +6,8 @@ metadata:
     SCRA Security Deposit Return
   description: |
     The SCRA Security Deposit Return Letter interview will help you draft a letter to a former landlord requesting they return your security deposit.
-  #exit url: https://www.masslegalservices.org/content/online-snap-calculator
   show login: False
-  #generate download screen: True
+  
 ---
 include: 
   - docassemble.AssemblyLine:assembly_line.yml
@@ -20,7 +19,7 @@ default screen parts:
   footer: |
     [:share-alt-square: Share](${ url_ask([{'undefine': ['al_sharing_type','al_how_share_link']}, 'al_share_form_screen', {'recompute': ['al_did_share_form']}, 'al_share_results']) })
     [:info-circle: About](${ url_action('about_this_interview') })
-    [:comment-dots: Feedback](https://forms.office.com/Pages/ResponsePage.aspx?id=gOsuS1HkzESOjJ_IxTUKuD8iguCNz0RHpK3V26oh9QpUQkJPTTc3UTBZU0cxVEpOQlMzSlc1R1gzQy4u){:target="_blank"}
+    [:comment-dots: Feedback](https://forms.office.com/Pages/ResponsePage.aspx?id=gOsuS1HkzESOjJ_IxTUKuD8iguCNz0RHpK3V26oh9QpUQzJSRVlEQVI3RjMyNFNSNEg1WEVEWFlMWi4u){:target="_blank"}
 ---
 features:
   question back button: True
@@ -79,18 +78,18 @@ content: |
 
   ### We keep your information safe
 
-  * We use the same technology that banks and online stores use to keep your information safe.
+  We use the same technology that banks and online stores use to keep your information safe. This includes:
   
-  * We use:
-    * 256 bit encryption
+  * 256 bit encryption
     
-    * Continual monitoring
+  * Continual monitoring
     
-    * Limited access controls
+  * Limited access controls
     
-    * Regular security updates
+  * Regular security updates
     
-    * Software firewalls
+  * Software firewalls
+
 
 
   ### Sharing your information
@@ -147,10 +146,11 @@ code: |
   tenancy_end_date
   set_progress(60)
   partial_return
-  not_returned_amount
-  do_dispute
-  if do_dispute:
-    wear_and_tear
+  if partial_return:
+    not_returned_amount
+    do_dispute
+    if do_dispute:
+      wear_and_tear
   #total_due
   set_progress(80)
   al_form_requires_digital_signature = False
@@ -181,10 +181,15 @@ code: |
  tenancy_end_date
  set_progress(60)
  partial_return
- not_returned_amount
- do_dispute
- if do_dispute:
-  wear_and_tear
+ if partial_return:
+    not_returned_amount
+    do_dispute
+    if do_dispute:
+      wear_and_tear
+ #not_returned_amount
+ #do_dispute
+ #if do_dispute:
+ # wear_and_tear
  #total_due
  set_progress(80)
  al_form_requires_digital_signature = False
@@ -206,9 +211,9 @@ subquestion: |
  
   This letter is for servicemembers or their dependents who have lawfully ended their lease using the SCRA and the landlord has failed to return their security deposit.
  
-  Please Note: This is not legal advice. If you have questions about a landlord keeping part or all of your security deposit, you should contact a lawyer. You can [find assistance](https://www.statesidelegal.org/stateside-map) at StatesideLegal's Find Legal Help. 
+  <b>Please Note: This is not legal advice.</b> If you have questions about a landlord keeping part or all of your security deposit, you should contact a lawyer. You can [search for legal assistance](https://www.statesidelegal.org/stateside-map) at StatesideLegal's Find Legal Help tool. 
   
-  You can learn more about the SCRA in the [What is the Servicemembers Civil Relief Act? (Video)](https://www.statesidelegal.org/what-servicemembers-civil-relief-act-video).
+   You can learn more about the SCRA in the video [What is the Servicemembers Civil Relief Act?](https://www.statesidelegal.org/what-servicemembers-civil-relief-act-video) at StatesideLegal.org.
   
   ${ display_template(PTLA_terms_of_use, scrollable=True, collapse=False) }
 fields:
@@ -264,7 +269,7 @@ sets:
 question: |
   What is your current address?
 subquestion: |
-  Be sure to use an address you can get mail at - this is the address you will ask your former landlord to send your deposit to!
+  This should be an address where you can get mail. It is the address where your former landlord will contact you and where your security deposit will be sent.  
 fields:
     - Street address: users[0].address.address
     - Unit: users[0].address.unit
@@ -284,8 +289,12 @@ sets:
 question:  |
   What is your former landlord's address?
 fields:
-  - code: |
-      other_parties[0].address_fields()
+    - Street address: other_parties[0].address.address
+    - Unit: other_parties[0].address.unit
+      required: False
+    - City/Town: other_parties[0].address.city
+    - State: other_parties[0].address.state
+    - Zip code: other_parties[0].address.zip
 continue button field: landlord_address
 ---
 id: Previous Rental
@@ -301,7 +310,7 @@ id: About Your Rank and Military Branch
 question: |
   More about you
 fields:
-  - Are you the servicemember on the old lease?: servicemember
+  - Are you the servicemember on the lease?: servicemember
     datatype: yesnoradio
   - "What is your rank?": rank
     maxlength: 25
@@ -336,9 +345,9 @@ id: Return status
 question: |
   What is the status of your security deposit?
 fields: 
-  - Has your landlord sent you a notice about not returning part or all of your security deposit?: partial_return
+  - Has your former landlord sent you a notice about not returning part or all of your security deposit?: partial_return
     datatype: yesnoradio
-  - What is the date on the notice your landlord sent you?: notice_date
+  - What is the date on the notice your former landlord sent you?: notice_date
     datatype: date
     show if: partial_return
 ---
@@ -353,8 +362,9 @@ id: Return demand
 question: |
   About your deposit
 fields:
-  - How much of your deposit has the landlord said they will keep?: not_returned_amount
+  - How much of your deposit has the former landlord said they will keep?: not_returned_amount
     datatype: currency
+  
 ---
 id: Do Dispute
 question: |
@@ -424,8 +434,11 @@ attachments:
 mandatory: True
 question: |
   All done! Below you can view, download, and email your completed letter. <p></p> 
-  <p>Please be sure to read the instructions. They will explain next steps depending on whether you have an attorney or not.</p>
+  <p>Please be sure to read the instructions. They explain your next steps and provide additional information. </p>
 subquestion: |
+
+  <b> NOTE: </b> Once you close out of this webpage, you will not be able to access your completed letter again. Make sure you download and print your letter and instructions before closing out this page.
+   <p>  </p>
 
   ${ al_user_bundle.download_list_html() }    
   

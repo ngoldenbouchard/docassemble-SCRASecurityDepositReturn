@@ -29,7 +29,7 @@ metadata:
     https://www.statesidelegal.org
 ---
 code: |
-  AL_ORGANIZATION_TITLE = "Veterans Forms Project"
+  AL_ORGANIZATION_TITLE = "SCRA Security Deposit Return Letter"
 ---  
 code: |
   AL_ORGANIZATION_HOMEPAGE = "https://apps.statesidelegal.org"
