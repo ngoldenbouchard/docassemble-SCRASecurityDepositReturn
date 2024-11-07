@@ -427,6 +427,9 @@ attachments:
     docx template file: SCRA_security_deposit_next_steps.docx
     variable name: Next_Steps[i]
 ---
+code: |
+  exit_button2 = [{'action': 'https://statesidelegal.org', 'label': 'Exit', 'icon': 'sign-out-alt', 'color': 'danger'}]
+---
 mandatory: True
 question: |
   All done! Below you can view, download, and email your completed letter. <p></p> 
@@ -439,3 +442,6 @@ subquestion: |
   ${ al_user_bundle.download_list_html() }    
   
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+  
+action buttons:
+  code: exit_button2
